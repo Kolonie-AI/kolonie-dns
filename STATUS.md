@@ -5,9 +5,9 @@ reading like a diary, it has failed. Last rewritten 2026-08-05.
 
 ## In one line
 
-The arrangement is written down, the work is on the board, and **the project has
-not begun** — the maintainer will say when it does (2026-08-05). Nothing here is
-pickable until then, deliberately.
+The arrangement is written down, the first work is described, and **the project
+has not begun** — the maintainer will say when it does (2026-08-05). There are no
+issues yet and that is deliberate.
 
 ## What exists
 
@@ -31,20 +31,21 @@ nothing enforces them.
 
 ## What is blocked
 
-**The whole project waits on the maintainer's signal to begin.** That is why
-nothing sits in Ready: an arriving agent should not pick this up before the word
-is given, and a board that said otherwise would be lying to it.
+**The whole project waits on the maintainer's signal to begin**, and there are no
+issues on the board for it. That is on purpose: an issue is a claim that work is
+scheduled, and none of it is. The work itself is described in
+[`docs/first-work.md`](docs/first-work.md), one section per issue-to-be, so that
+the day the signal comes is spent working rather than deciding.
 
-Underneath that, two real blocks:
+Underneath that, two things will still be blocked when it comes:
 
 | | |
 |---|---|
-| [#2](https://github.com/Kolonie-AI/kolonie-dns/issues/2) — a machine | `blocked:human`. The maintainer said on 2026-08-05 they would provide it. Everything touching the deployment waits on it, and it is the only item on the critical path an agent cannot do |
-| [#1](https://github.com/Kolonie-AI/kolonie-dns/issues/1) — the Public Suffix List | A public action in the Colony's name, so it waits on the same signal. Everything it needs is prepared in [`infra/public-suffix-list.md`](infra/public-suffix-list.md) — it is a command, not a research session |
+| A machine | `blocked:human` — it costs money and needs an account that is not Kolonie's. The maintainer said on 2026-08-05 they would provide it. Everything touching the deployment waits on it |
+| The Public Suffix List submission | A public action in the Colony's name, so it waits on the same signal. Everything it needs is prepared in [`infra/public-suffix-list.md`](infra/public-suffix-list.md) — it is a command, not a research session |
 
-[#3](https://github.com/Kolonie-AI/kolonie-dns/issues/3) — schema, tombstones and
-the reserved-name list — needs no machine at all. It is in Backlog rather than
-Ready for the reason above, and it is the one to start with.
+The schema, the tombstone rule and the reserved-name list need no machine at all.
+That is the one to start with.
 
 ## What is decided
 
@@ -83,21 +84,26 @@ is Django and we run Python nowhere else
 
 ## What happens next
 
-All of it is written as issues, on the Kolonie board under `area:dns`
-([N-019](docs/decisions/issues-live-on-the-kolonie-board.md)):
+Six pieces of work, described in [`docs/first-work.md`](docs/first-work.md) — one
+section each, with what blocks it and what would make it done. They become issues
+on the Kolonie board under `area:dns`
+([N-019](docs/decisions/issues-live-on-the-kolonie-board.md)) **on the day the
+project begins, and not before.**
 
-| | | Column |
-|---|---|---|
-| [#1](https://github.com/Kolonie-AI/kolonie-dns/issues/1) | Submit to the Public Suffix List — weeks of latency, depends on nothing, cannot be retrofitted | Blocked |
-| [#2](https://github.com/Kolonie-AI/kolonie-dns/issues/2) | A machine of its own | Blocked, `blocked:human` |
-| [#3](https://github.com/Kolonie-AI/kolonie-dns/issues/3) | Schema, tombstones, reserved names — needs no machine | Backlog |
-| [#4](https://github.com/Kolonie-AI/kolonie-dns/issues/4) | Move the delegation, and the three things true before the first public query | Blocked by #2 |
-| [#5](https://github.com/Kolonie-AI/kolonie-dns/issues/5) | The product: ask for a name, set an `A` record, it resolves | Blocked by #2, #3 |
+| | Needs a machine? |
+|---|---|
+| Submit to the Public Suffix List — weeks of latency, depends on nothing, cannot be retrofitted | no |
+| Schema, tombstones, reserved names | no |
+| A machine of its own | it *is* the machine |
+| Move the delegation, and the three things true before the first public query | yes |
+| The product: ask for a name, set an `A` record, it resolves | yes |
+| A landing page at the apex | yes, or a static host |
 
-**The order once the signal comes:** #1 and #3 start immediately and in parallel —
-one is a queue we cannot shorten, the other needs nothing. #2 arrives when it
-arrives. #4 and #5 follow it.
+**The order when the signal comes:** the Public Suffix List and the schema start
+immediately and in parallel — one is a queue we cannot shorten, the other needs
+nothing. The machine arrives when it arrives, and the rest follows it.
 
-On the platform side, already filed and in Ready:
+On the platform side, already filed and in Ready because it changes a rung
+citizens meet today:
 [`kolonie-platform#373`](https://github.com/Kolonie-AI/kolonie-platform/issues/373)
 — `domain-verify` must refuse a `kolonie.sh` name and say so first.

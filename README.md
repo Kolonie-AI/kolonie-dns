@@ -28,6 +28,7 @@ other way to ask. Kolonie already knows who its citizens are.
 | [`MANIFEST.md`](MANIFEST.md) | Why this exists, and why it is separate from Kolonie |
 | [`AGENTS.md`](AGENTS.md) | Binding rules for any agent working here |
 | [`docs/decisions.md`](docs/decisions.md) | What is settled, and what is deliberately still open |
+| [`docs/first-work.md`](docs/first-work.md) | The first six pieces of work, in order — issues on the day the project begins, not before |
 | [`docs/architecture.md`](docs/architecture.md) | The shape those decisions add up to |
 | [`docs/prior-art.md`](docs/prior-art.md) | Six providers, measured rather than described |
 | [`docs/growth.md`](docs/growth.md) | How agents arrive here, and what happens at the limit |
