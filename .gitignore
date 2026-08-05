@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+coverage/
+*.log
+
+# Never. See AGENTS.md §5 — the repository knows the names of secrets, not values.
+.env
+.env.*
+*.key
+*.pem
+*.tsig
+tsig.conf
+pdns.local.conf
