@@ -30,3 +30,11 @@ is short, and `agent.kolonie.sh` is a name an agent is not embarrassed to publis
 `kolonie.sh` was registered 2026-08-04 alongside `kolonie.email` and `kolonie.to`,
 and `kolonie-email`'s own status file records it as explicitly *not* part of that
 project. This is what it is for.
+
+**Since 2026-08-05 this is no longer decided per project.** The Colony has a
+family rule — *the second level always says Kolonie, the top level names the
+service* — recorded in
+[`kolonie-docs`](https://github.com/Kolonie-AI/kolonie-docs/blob/main/state/decisions/the-family-naming-rule.md),
+where the abbreviated-brand alternative (`koldns`, `kolmail`) is rejected with its
+reasoning. This decision is now an instance of that rule rather than an argument
+for it, and a future sister project does not have to have the argument again.
