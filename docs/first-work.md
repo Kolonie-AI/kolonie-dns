@@ -88,7 +88,11 @@ Two rules the **schema** has to encode, rather than leaving them to the API:
 
 The reserved-name list is a list rather than a classifier, so a maintainer can
 always answer *why was this refused* with a word
-([N-015](decisions/names-are-the-only-real-abuse-surface.md)).
+([N-015](decisions/names-are-the-only-real-abuse-surface.md)). It is checked in
+the same place and at the same moment as the label grammar
+([N-024](decisions/what-a-name-may-be.md)) — including on the punycode-encoded
+form, or the rule against internationalised names is one `xn--` away from being
+bypassed.
 
 **Done when:** the check command passes; tests run against a real PostgreSQL 16
 reached through `DATABASE_URL` and a local PowerDNS; and at least one of them is a

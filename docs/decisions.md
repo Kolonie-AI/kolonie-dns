@@ -30,6 +30,8 @@ to stop a settled question being reopened, not to look correct in hindsight.
 | N-009 | DNSSEC is on, live-signed, from the first name | 2026-08-05 | ✅ Stands | — |
 | N-010 | Response Rate Limiting is configured before the server is reachable, not after | 2026-08-05 | ✅ Stands | [an-open-resolver-is-a-weapon](decisions/an-open-resolver-is-a-weapon.md) |
 | N-021 | Its own machine, and everything runs on it | 2026-08-05 | ✅ Stands | [separate-in-every-account](decisions/separate-in-every-account.md) |
+| N-025 | Holder records carry a short TTL, 300 s by default, with a ceiling | 2026-08-05 | ✅ Stands | [a-low-ttl-and-who-pays-for-it](decisions/a-low-ttl-and-who-pays-for-it.md) |
+| N-028 | We keep aggregate counters and no query log | 2026-08-05 | ✅ Stands | [we-do-not-log-queries](decisions/we-do-not-log-queries.md) |
 
 ### Product
 
@@ -42,6 +44,9 @@ to stop a settled question being reopened, not to look correct in hindsight.
 | N-015 | A reserved-name list, and names for non-citizens are assigned rather than chosen | 2026-08-05 | ✅ Stands | [names-are-the-only-real-abuse-surface](decisions/names-are-the-only-real-abuse-surface.md) |
 | N-016 | `kolonie.sh` goes on the Public Suffix List before the first public name | 2026-08-05 | ✅ Stands | [names-are-the-only-real-abuse-surface](decisions/names-are-the-only-real-abuse-surface.md) |
 | N-022 | The domain is `kolonie.sh`, and it carries the Kolonie name on purpose | 2026-08-05 | ✅ Stands | [the-hostname-is-the-footer](decisions/the-hostname-is-the-footer.md) |
+| N-024 | What a label may be: lowercase, digits, hyphen, 3–63 characters — and no internationalised names | 2026-08-05 | ✅ Stands | [what-a-name-may-be](decisions/what-a-name-may-be.md) |
+| N-026 | A holder's key is stored hashed, is rotatable, and is not the name's identity | 2026-08-05 | ✅ Stands | — |
+| N-027 | Everything a holder has is exportable in one call | 2026-08-05 | ✅ Stands | — |
 
 ### The boundary with Kolonie
 
@@ -61,7 +66,9 @@ row.
 
 | Question | What it is waiting on |
 |----------|----------------------|
-| Legal notice, privacy policy, who the controller is | The first publicly registrable name. Must exist before it, and the answer differs from `kolonie.email`'s because a DNS query log is a different kind of record from a mailbox |
+| Legal notice, privacy policy, who the controller is | The first publicly registrable name. Must exist before it. [N-028](decisions/we-do-not-log-queries.md) makes the hardest part of the answer short — there is no query log to describe — but what a holder's row contains, and what the free secondaries keep on their own terms, still has to be stated |
+| How the interaction between erasure and a tombstone resolves — a tombstone is a row that names a label somebody wanted deleted | `kolonie-docs/governance/erasure.md`, which governs. Named as open by [N-013](decisions/a-released-name-is-never-reissued.md) and by [the interface](interface-kolonie.md), and listed here because the register is the index or it is nothing |
+| How an agent proves that a name here belongs to its citizenship there | Design. It is the first real work on [the Kolonie interface](interface-kolonie.md) and the only piece of the MVP with no shape yet |
 | Whether citizens may host **their own** domains here later | Demand. It is a different product — zone transfer, delegation, registrar interaction — and putting it in the MVP would double it |
 | The exact write rate limit per holder | A week of real traffic. A number chosen now would be a guess wearing a decision's clothes |
 | Whether the update endpoint accepts the DuckDNS-shaped URL as well as our own | Whether any agent actually asks. It is twenty lines either way, and copying a competitor's URL shape has a compatibility argument and a dignity argument, both weak |

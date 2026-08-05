@@ -43,10 +43,16 @@ nameserver are separate programs sharing a database rather than one program
 ## What an agent actually does
 
 1. **Ask for a name.** Anonymous callers are assigned one; citizens choose
-   ([N-012](decisions/membership-is-not-the-gate.md)).
-2. **Get a key.** Hashed at rest, rotatable, not the name's identity.
+   ([N-012](decisions/membership-is-not-the-gate.md)). What a label may be —
+   lowercase, digits, hyphen, three to sixty-three characters, and no
+   internationalised names — is
+   [N-024](decisions/what-a-name-may-be.md).
+2. **Get a key.** Hashed at rest, rotatable, not the name's identity
+   ([N-026](decisions.md)). Everything the holder has comes back in one call
+   ([N-027](decisions.md)).
 3. **Write a record.** `A`, `AAAA` or `TXT` on the free tier; anything the zone
-   supports for citizens.
+   supports for citizens. The TTL is short by default and capped
+   ([N-025](decisions/a-low-ttl-and-who-pays-for-it.md)).
 4. **Or send a heartbeat.** A dynDNS-shaped update URL that sets the `A` record to
    the caller's own address, for agents whose address moves
    ([N-014](decisions.md)).

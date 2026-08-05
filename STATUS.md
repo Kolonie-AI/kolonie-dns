@@ -49,8 +49,8 @@ That is the one to start with.
 
 ## What is decided
 
-All of it is in [the register](docs/decisions.md), N-001 to N-023. The five that
-shape everything else:
+All of it is in [the register](docs/decisions.md), **N-001 to N-028**. The five
+that shape everything else:
 
 - **no Cloudflare** — its record ceiling costs money and still caps below the
   target ([N-001](docs/decisions/no-cloudflare.md))
@@ -64,7 +64,12 @@ shape everything else:
   parent that could withdraw it
   ([N-017](docs/decisions/a-name-here-is-not-a-name-of-your-own.md))
 
-Six questions are open on purpose and are listed at the bottom of the register.
+**Eight questions are open on purpose** and are listed at the bottom of the
+register. Two of them were added on 2026-08-05 after a check found them named as
+open inside decision files while the register — which is supposed to be the index
+— did not list them: how erasure and a tombstone interact, and how an agent proves
+that a name here belongs to its citizenship there. The second is the only piece of
+the MVP with no shape yet.
 
 ## How this got here
 
