@@ -5,9 +5,9 @@ reading like a diary, it has failed. Last rewritten 2026-08-05.
 
 ## In one line
 
-The arrangement is written down, the domain is registered and pointing at the
-wrong nameservers, nothing is built, and nothing can be deployed until a machine
-exists.
+The arrangement is written down, the work is on the board, and **the project has
+not begun** — the maintainer will say when it does (2026-08-05). Nothing here is
+pickable until then, deliberately.
 
 ## What exists
 
@@ -31,13 +31,20 @@ nothing enforces them.
 
 ## What is blocked
 
-**Everything that touches the deployment is blocked on a machine**, which is a
-maintainer action: it costs money and it needs an account that is not Kolonie's
-([N-020](docs/decisions/separate-in-every-account.md)).
+**The whole project waits on the maintainer's signal to begin.** That is why
+nothing sits in Ready: an arriving agent should not pick this up before the word
+is given, and a board that said otherwise would be lying to it.
 
-Not blocked on it: the schema, the API shape, the reserved-name list, the tests
-against a local PowerDNS, and the Public Suffix List submission — which should
-start first, because it is the only item measured in weeks.
+Underneath that, two real blocks:
+
+| | |
+|---|---|
+| [#2](https://github.com/Kolonie-AI/kolonie-dns/issues/2) — a machine | `blocked:human`. The maintainer said on 2026-08-05 they would provide it. Everything touching the deployment waits on it, and it is the only item on the critical path an agent cannot do |
+| [#1](https://github.com/Kolonie-AI/kolonie-dns/issues/1) — the Public Suffix List | A public action in the Colony's name, so it waits on the same signal. Everything it needs is prepared in [`infra/public-suffix-list.md`](infra/public-suffix-list.md) — it is a command, not a research session |
+
+[#3](https://github.com/Kolonie-AI/kolonie-dns/issues/3) — schema, tombstones and
+the reserved-name list — needs no machine at all. It is in Backlog rather than
+Ready for the reason above, and it is the one to start with.
 
 ## What is decided
 
@@ -76,18 +83,21 @@ is Django and we run Python nowhere else
 
 ## What happens next
 
-1. **Submit `kolonie.sh` to the Public Suffix List.** Weeks of latency, no
-   dependency on anything else, and it cannot be retrofitted
-   ([N-016](docs/decisions/names-are-the-only-real-abuse-surface.md))
-2. **A machine**, which is the maintainer's to authorise
-3. **Move the delegation off Cloudflare** to our own nameservers, named under
-   `kolonie.ai` ([N-008](docs/decisions/the-nameservers-are-named-elsewhere.md))
-4. **The write path**, which is the whole product: ask for a name → set an `A`
-   record → it resolves, with rate limiting and DNSSEC on before the first public
-   query
+All of it is written as issues, on the Kolonie board under `area:dns`
+([N-019](docs/decisions/issues-live-on-the-kolonie-board.md)):
 
-Steps 1, 3 and 4 are not written as issues yet. That is the next piece of work on
-this repository, and only step 2 is blocked on the maintainer.
+| | | Column |
+|---|---|---|
+| [#1](https://github.com/Kolonie-AI/kolonie-dns/issues/1) | Submit to the Public Suffix List — weeks of latency, depends on nothing, cannot be retrofitted | Blocked |
+| [#2](https://github.com/Kolonie-AI/kolonie-dns/issues/2) | A machine of its own | Blocked, `blocked:human` |
+| [#3](https://github.com/Kolonie-AI/kolonie-dns/issues/3) | Schema, tombstones, reserved names — needs no machine | Backlog |
+| [#4](https://github.com/Kolonie-AI/kolonie-dns/issues/4) | Move the delegation, and the three things true before the first public query | Blocked by #2 |
+| [#5](https://github.com/Kolonie-AI/kolonie-dns/issues/5) | The product: ask for a name, set an `A` record, it resolves | Blocked by #2, #3 |
 
-The platform side is already filed:
-[`kolonie-platform#373`](https://github.com/Kolonie-AI/kolonie-platform/issues/373).
+**The order once the signal comes:** #1 and #3 start immediately and in parallel —
+one is a queue we cannot shorten, the other needs nothing. #2 arrives when it
+arrives. #4 and #5 follow it.
+
+On the platform side, already filed and in Ready:
+[`kolonie-platform#373`](https://github.com/Kolonie-AI/kolonie-platform/issues/373)
+— `domain-verify` must refuse a `kolonie.sh` name and say so first.
