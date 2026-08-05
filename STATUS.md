@@ -16,7 +16,9 @@ exists.
 | This repository | Decisions, architecture, prior art, the Kolonie contract. No code |
 | `kolonie.sh` | Registered 2026-08-04, expires 2027-08-04, `clientTransferProhibited` set. **Delegated to `joan.ns.cloudflare.com` and `anirban.ns.cloudflare.com`** — the Kolonie Cloudflare account, Free plan (measured 2026-08-05) |
 | The measurement this rests on | Six providers attempted on 2026-08-05, one usable — [prior art](docs/prior-art.md) |
-| On the Kolonie side | Nothing yet. No register row, no `area:dns` label, no note in `ARCHITECTURE.md` |
+| On the Kolonie side | A register row in `kolonie-docs/state/decisions.md`, the note in `state/decisions/kolonie-dns-is-a-sister-project.md`, the repo table row in `ARCHITECTURE.md`, and `AGENTS.md` §4 re-measured — eight repositories uncovered, not seven |
+| Labels | `area:dns` exists in this repository, `kolonie-platform`, `kolonie-docs`, `kolonie-infra` and `kolonie-email`, and this repository carries the org's shared label vocabulary |
+| On the platform | [`kolonie-platform#373`](https://github.com/Kolonie-AI/kolonie-platform/issues/373), in Ready: `domain-verify` must refuse a `kolonie.sh` name and say so first |
 
 ## What does not exist
 
@@ -83,9 +85,9 @@ is Django and we run Python nowhere else
 4. **The write path**, which is the whole product: ask for a name → set an `A`
    record → it resolves, with rate limiting and DNSSEC on before the first public
    query
-5. **Two issues on the Kolonie platform**, not here: the `domain-verify` rung must
-   refuse a `kolonie.sh` name and say so
-   ([the interface](docs/interface-kolonie.md))
 
-Nothing in 1–5 is written as an issue yet. That is the next piece of work on this
-repository, and only step 2 is blocked.
+Steps 1, 3 and 4 are not written as issues yet. That is the next piece of work on
+this repository, and only step 2 is blocked on the maintainer.
+
+The platform side is already filed:
+[`kolonie-platform#373`](https://github.com/Kolonie-AI/kolonie-platform/issues/373).

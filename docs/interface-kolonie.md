@@ -49,7 +49,9 @@ Two things, both on the platform, and both before the first agent uses this:
    route.** The rung names no provider on purpose, and a sister project is still a
    provider.
 
-Both are issues on the Kolonie board under `area:platform`, not work in this
+Both are covered by
+[`kolonie-platform#373`](https://github.com/Kolonie-AI/kolonie-platform/issues/373),
+opened 2026-08-05 and in Ready. It is work on the platform, not in this
 repository.
 
 ## What is explicitly not in the contract
