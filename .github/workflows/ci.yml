@@ -1,0 +1,24 @@
+# The check, on every push and every pull request.
+#
+# `AGENTS.md` §9 names the same command, and that is the contract the hourly
+# worker (`kolonie-docs#231`) reads: it runs what this workflow runs, so a green
+# check locally means a green check here. If the two ever diverge, the section is
+# what is wrong — a check command that is a shorter CI teaches you that green
+# means nothing.
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run the repository's own check
+        run: bash .github/scripts/check.sh
