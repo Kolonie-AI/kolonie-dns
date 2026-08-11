@@ -5,6 +5,15 @@
 # check locally means a green check here. If the two ever diverge, the section is
 # what is wrong — a check command that is a shorter CI teaches you that green
 # means nothing.
+#
+# ## Why the database comes up through `db/up.sh` and not through `services:`
+#
+# A `services:` block would be a second description of the same stack, in a
+# syntax the machine cannot run and a developer never sees fail. It also cannot
+# express the ordering that matters: PowerDNS fills its zone cache at startup and
+# a schema that does not exist yet is fatal to it, so the migrations have to run
+# between the two containers. `db/up.sh` is where that is written down once, and
+# CI runs the same script a person runs.
 name: check
 
 on:
@@ -18,7 +27,27 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Bring up PostgreSQL and PowerDNS
+        run: |
+          set -euo pipefail
+          # `up.sh` prints `export NAME=value`, which is what a shell and the
+          # worker both want; `$GITHUB_ENV` wants it without the keyword.
+          bash db/up.sh | sed 's/^export //' >> "$GITHUB_ENV"
+
       - name: Run the repository's own check
         run: bash .github/scripts/check.sh
+
+      - name: What PowerDNS said, when the check went red
+        if: failure()
+        run: docker compose -f db/docker-compose.yml logs --no-color pdns

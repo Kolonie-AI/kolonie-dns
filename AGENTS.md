@@ -153,19 +153,25 @@ the same order, and it is the whole of what CI runs rather than a faster subset 
 a check command that omits something CI does teaches you that green means
 nothing.
 
-Today it checks five things, because today this repository is Markdown: every
-relative link resolves, every file in `docs/decisions/` is cited by the register,
-no `N-` number is used twice, no secret is in the tree, and **no address of this
-project's machine is in any file** — §5's second red line, which the sibling
-repositories do not have and which is worth a pattern rather than review, because
-the machine is arriving ([#10](https://github.com/Kolonie-AI/kolonie-dns/issues/10))
-and the first person to paste an address into a runbook will not be doing it
-maliciously. The loopback and RFC 5737's documentation ranges are allowed, so an
-example has somewhere legitimate to live.
+It checks six things. Five are about the documents: every relative link resolves,
+every file in `docs/decisions/` is cited by the register, no `N-` number is used
+twice, no secret is in the tree, and **no address of this project's machine is in
+any file** — §5's second red line, which the sibling repositories do not have and
+which is worth a pattern rather than review, because the machine is arriving
+([#10](https://github.com/Kolonie-AI/kolonie-dns/issues/10)) and the first person
+to paste an address into a runbook will not be doing it maliciously. The loopback
+and RFC 5737's documentation ranges are allowed, so an example has somewhere
+legitimate to live.
 
-**It grows as the repository does.** When `db/`, `api/` and `dns/` hold code,
-their tests are added to the script and these stay — a broken link does not stop
-mattering because there is now a suite.
+The sixth is `db/`'s suite: what the schema refuses, asserted against a real
+PostgreSQL 16 and a real PowerDNS. **It does not skip itself when there is no
+database** — an unset `DATABASE_URL` is a failure naming the command that fixes
+it, because a suite that skips silently reports green while covering nothing.
+
+**It grows as the repository does.** When `api/` and `dns/` hold code, their tests
+are added to the script and these stay — a broken link does not stop mattering
+because there is now a suite. That has already happened once, on
+[#11](https://github.com/Kolonie-AI/kolonie-dns/issues/11).
 
 **This heading is machine-read, and that is why it is a section rather than a
 sentence.** The organisation's hourly coding worker learns each repository's check
@@ -185,16 +191,17 @@ bash .github/scripts/opencode-worker.sh check-command AGENTS.md
 
 ### The check prerequisite
 
-**There is none, and that is the answer rather than an omission.** The sibling
-heading *The check prerequisite* (`kolonie-docs#247`) is for a repository whose
-check cannot run in an empty container — `kolonie-platform` names `npm run
-test:db:up` there, because its suite fails hard without a database. This check
-needs `bash`, `grep`, `sed`, `find` and `realpath` and nothing else, so it names
-no prerequisite and the worker reads silence. A missing check *command* stops a
-run; a missing prerequisite does not.
+```bash
+npm ci && eval "$(npm run --silent db:up)"
+```
 
-**This will change with the schema**
-([#11](https://github.com/Kolonie-AI/kolonie-dns/issues/11)), whose tests want a
-real PostgreSQL 16 and a local PowerDNS. When they land, the command that brings
-those up goes in the block above and this paragraph goes away — the worker reads
-the section, not this note.
+PostgreSQL 16 and PowerDNS, in Docker, migrated and answering. It prints the two
+`export` lines the suite needs on stdout and nothing else, which is the shape
+`opencode-worker.sh exports` reads (`kolonie-docs#247`).
+
+**This heading was empty until `#11`, and the emptiness was the answer then.**
+The check was five greps over Markdown and needed nothing. Now the sixth check is
+a suite against a real database, so the prerequisite is real too — and the reason
+the worker reads it out of this file rather than carrying a `services:
+postgres:16` block is that the next repository with a prerequisite would
+otherwise discover the same thing again.
