@@ -103,7 +103,21 @@ jobs:
       # cost this does not need to take on for two commands.
       - name: Open a pull request if it changed
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # `SKILL_SYNC_TOKEN` where the organisation has one, and `GITHUB_TOKEN`
+          # otherwise (`kolonie-docs#288`). A pull request opened with
+          # `GITHUB_TOKEN` does not trigger workflows — GitHub's loop guard — so
+          # `check` is never reported on it. Since `kolonie-docs#278` made `check`
+          # required on `main`, that is a pull request nobody can merge: it waits
+          # forever on a status that will not arrive. Opened with a token
+          # belonging to a user it is an ordinary pull request — `check` runs,
+          # reports, and the auto-merge sweep (`kolonie-docs#275`) has something
+          # to wait on.
+          #
+          # **The fallback is deliberate.** Until the secret exists this behaves
+          # exactly as it does today, which is wrong but familiar; a sync job that
+          # fails to open the pull request at all would be worse than one that
+          # opens an unmergeable one.
+          GH_TOKEN: ${{ secrets.SKILL_SYNC_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           if git diff --quiet -- README.md; then
