@@ -3,11 +3,11 @@
 What has to happen, in the order it has to happen, written down before the project
 begins so that the day it begins is spent working rather than deciding.
 
-**There are no issues yet, and that is deliberate.** Issues are opened on the day
-the maintainer says the project starts
-([`STATUS.md`](../STATUS.md)). Each section below is one issue's worth of work and
-carries what that issue will need: why, what blocks it, and what would make it
-done. Nothing here is scheduled and nothing here is claimed.
+**The maintainer gave the signal on 2026-08-11** (`kolonie-docs#290`), and each
+section below is now an issue, opened untriaged and in Inbox on the Kolonie board
+so that routing, priority and readiness are decided by triage rather than by the
+author. This file stays as the argument behind each one — an issue says what to
+do, and this says why it is in this order.
 
 The one exception lives on the platform rather than here:
 [`kolonie-platform#373`](https://github.com/Kolonie-AI/kolonie-platform/issues/373),
@@ -15,7 +15,7 @@ already open, because it changes an Academy rung that citizens meet today.
 
 ---
 
-## 1. Submit `kolonie.sh` to the Public Suffix List
+## 1. Submit `kolonie.sh` to the Public Suffix List — [#9](https://github.com/Kolonie-AI/kolonie-dns/issues/9)
 
 **First, because it is the only item measured in weeks.** It depends on nothing —
 not the machine, not the delegation, not a line of code — and nothing depends on
@@ -31,8 +31,9 @@ Everything needed is prepared in
 `_psl` record, the order the two have to happen in — it is circular, the record
 names a pull request that does not exist yet — and what the rationale must say.
 
-**Waits on:** the maintainer's signal. It is a public action taken in the Colony's
-name ([`AGENTS.md`](../AGENTS.md) §7).
+**Waits on:** the maintainer's word before the pull request is opened — it is a
+public action taken in the Colony's name ([`AGENTS.md`](../AGENTS.md) §7). The
+preparation up to that point waits on nothing.
 
 **Done when:** the entry is merged, or the pull request is open with the `_psl`
 record verified against it, and `STATUS.md` records the URL. Questions from the
@@ -40,7 +41,7 @@ list's maintainers are answered rather than left.
 
 ---
 
-## 2. A machine of its own
+## 2. A machine of its own — [#10](https://github.com/Kolonie-AI/kolonie-dns/issues/10)
 
 **The only thing on the critical path an agent cannot do.** It costs money and
 needs an account that is not Kolonie's, which is `blocked:human` under class 4 of
@@ -65,7 +66,7 @@ the deploy needs it and **never in this repository**
 
 ---
 
-## 3. Schema, tombstones and the reserved-name list
+## 3. Schema, tombstones and the reserved-name list — [#11](https://github.com/Kolonie-AI/kolonie-dns/issues/11)
 
 **The work that needs no machine**, and therefore the one to start alongside the
 Public Suffix List. Doing it first means the weekend after the machine arrives is
@@ -100,11 +101,13 @@ rejection case — issuing a tombstoned label is refused by the database.
 
 ---
 
-## 4. Move the delegation, and answer no public query before three things are true
+## 4. Move the delegation, and answer no public query before three things are true — [#12](https://github.com/Kolonie-AI/kolonie-dns/issues/12)
 
-Measured 2026-08-05: `kolonie.sh` is delegated to `joan.ns.cloudflare.com` and
-`anirban.ns.cloudflare.com`, in the Kolonie Cloudflare account, on the Free plan.
-[N-001](decisions/no-cloudflare.md) moves it.
+Measured 2026-08-05 and again 2026-08-11, unchanged: `kolonie.sh` is delegated to
+`joan.ns.cloudflare.com` and `anirban.ns.cloudflare.com`, in the Kolonie
+Cloudflare account, on the Free plan. [N-001](decisions/no-cloudflare.md) moves
+it — and the delegation change itself is written with the Kolonie credential, the
+one deliberate exception ([N-020](decisions/separate-in-every-account.md)).
 
 **Three preconditions, from [`operations.md`](operations.md), none of which can be
 added afterwards:**
@@ -134,7 +137,7 @@ address is refused, demonstrated; and the rollover procedure is written into
 
 ---
 
-## 5. The product: ask for a name, set an `A` record, it resolves
+## 5. The product: ask for a name, set an `A` record, it resolves — [#13](https://github.com/Kolonie-AI/kolonie-dns/issues/13)
 
 The MVP as [`architecture.md`](architecture.md) defines it, plus the dynDNS-style
 update URL. Everything else — console, web UI, `MX` and mail routing, zone
@@ -173,7 +176,7 @@ and an unreachable citizenship lookup never downgrades or releases anybody.
 
 ---
 
-## 6. A landing page at the apex
+## 6. A landing page at the apex — [#14](https://github.com/Kolonie-AI/kolonie-dns/issues/14)
 
 **The hostname is this project's distribution channel**
 ([N-022](decisions/the-hostname-is-the-footer.md)), and a hostname that resolves to

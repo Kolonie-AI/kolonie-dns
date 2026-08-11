@@ -33,9 +33,16 @@ work, stop** — that is the failure this project is shaped to prevent, and it i
 the same red line `kolonie-email` draws.
 
 The one deliberate exception is `kolonie.ai`, used only to *name* our nameservers
-([N-008](the-nameservers-are-named-elsewhere.md)). That is a read-only dependency
-on a name resolving, not shared credentials, and it is recorded rather than
-assumed.
+([N-008](the-nameservers-are-named-elsewhere.md)). For everything downstream that
+is a read-only dependency on a name resolving. **Publishing those records once is
+not**, and the wording here said otherwise until 2026-08-11: the `kolonie.ai` zone
+is in Kolonie's Cloudflare account and the development agents hold a credential
+for it, so the nameserver records — and the delegation change that moves
+`kolonie.sh` off Cloudflare ([N-001](no-cloudflare.md)) — are written with a
+Kolonie credential. That is a handful of writes in the *parent* zone, not this
+service running on Kolonie's account, and it changes nothing below: the machine,
+the registrar access and the monitoring are still this project's own and still do
+not exist.
 
 ## What is shared, on purpose
 

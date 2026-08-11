@@ -1,23 +1,25 @@
 # STATUS — what exists right now
 
 Present tense only. **This file is rewritten, never appended to** — if it starts
-reading like a diary, it has failed. Last rewritten 2026-08-05.
+reading like a diary, it has failed. Last rewritten 2026-08-11.
 
 ## In one line
 
-The arrangement is written down, the first work is described, and **the project
-has not begun** — the maintainer will say when it does (2026-08-05). There are no
-issues yet and that is deliberate.
+**The project has begun** — the maintainer gave the signal on 2026-08-11
+(`kolonie-docs#290`) — the first work is on the board, and the two pieces that
+need no machine can start today.
 
 ## What exists
 
 | | |
 |---|---|
 | This repository | Decisions, architecture, prior art, the Kolonie contract. No code |
-| `kolonie.sh` | Registered 2026-08-04, expires 2027-08-04, `clientTransferProhibited` set. **Delegated to `joan.ns.cloudflare.com` and `anirban.ns.cloudflare.com`** — the Kolonie Cloudflare account, Free plan (measured 2026-08-05) |
+| `kolonie.sh` | Registered 2026-08-04, expires 2027-08-04, `clientTransferProhibited` set. **Still delegated to `joan.ns.cloudflare.com` and `anirban.ns.cloudflare.com`** — the Kolonie Cloudflare account, Free plan (measured 2026-08-11). [N-001](docs/decisions/no-cloudflare.md) moves it, and until it does, nothing here is live |
+| Cloudflare access | Both development agents hold a credential for the Kolonie account. It reaches the `kolonie.ai` zone, where our nameservers are *named* ([N-008](docs/decisions/the-nameservers-are-named-elsewhere.md)), and the current `kolonie.sh` delegation. **It does not provide a machine and it does not reverse [N-001](docs/decisions/no-cloudflare.md)** — the agents' zone still does not live at Cloudflare |
 | The measurement this rests on | Six providers attempted on 2026-08-05, one usable — [prior art](docs/prior-art.md) |
 | On the Kolonie side | A register row in `kolonie-docs/state/decisions.md`, the note in `state/decisions/kolonie-dns-is-a-sister-project.md`, the repo table row in `ARCHITECTURE.md`, and `AGENTS.md` §4 re-measured — eight repositories uncovered, not seven |
 | Labels | `area:dns` exists in this repository, `kolonie-platform`, `kolonie-docs`, `kolonie-infra` and `kolonie-email`, and this repository carries the org's shared label vocabulary |
+| Issues | The six pieces of [`docs/first-work.md`](docs/first-work.md) are open and on the Kolonie board, in Inbox and untriaged — routing, priority and readiness are the triage worker's to decide, not the author's |
 | On the platform | [`kolonie-platform#373`](https://github.com/Kolonie-AI/kolonie-platform/issues/373), in Ready: `domain-verify` must refuse a `kolonie.sh` name and say so first |
 
 ## What does not exist
@@ -31,21 +33,17 @@ nothing enforces them.
 
 ## What is blocked
 
-**The whole project waits on the maintainer's signal to begin**, and there are no
-issues on the board for it. That is on purpose: an issue is a claim that work is
-scheduled, and none of it is. The work itself is described in
-[`docs/first-work.md`](docs/first-work.md), one section per issue-to-be, so that
-the day the signal comes is spent working rather than deciding.
-
-Underneath that, two things will still be blocked when it comes:
+The signal is no longer one of them. Three things are, and they are precise:
 
 | | |
 |---|---|
-| A machine | `blocked:human` — it costs money and needs an account that is not Kolonie's. The maintainer said on 2026-08-05 they would provide it. Everything touching the deployment waits on it |
-| The Public Suffix List submission | A public action in the Colony's name, so it waits on the same signal. Everything it needs is prepared in [`infra/public-suffix-list.md`](infra/public-suffix-list.md) — it is a command, not a research session |
+| **A machine** | `blocked:human`. It costs money and needs an account that is not Kolonie's ([N-020, N-021](docs/decisions/separate-in-every-account.md)); the maintainer said on 2026-08-05 they would provide it. Everything touching the deployment waits on it — the delegation, the product, the landing page |
+| **The Public Suffix List submission** | A public action in the Colony's name, so it needs the maintainer's word before the pull request is opened (`AGENTS.md` §7). Everything it needs is prepared in [`infra/public-suffix-list.md`](infra/public-suffix-list.md) — it is a command, not a research session. It is also the longest queue in the project and nothing goes public without it ([N-016](docs/decisions/names-are-the-only-real-abuse-surface.md)) |
+| **Registrar and delegation changes** | Moving `kolonie.sh` off Cloudflare, and later the `DS` record, are maintainer-confirmed actions (`AGENTS.md` §7) and cannot happen before the nameservers answer |
 
-The schema, the tombstone rule and the reserved-name list need no machine at all.
-That is the one to start with.
+**The schema, the tombstone rule and the reserved-name list need none of the
+three.** That is the one to start with, alongside preparing the Public Suffix List
+submission up to the point where it needs the word.
 
 ## What is decided
 
@@ -87,13 +85,15 @@ the wildcard certificates and the routing table, so the project got smaller.
 is Django and we run Python nowhere else
 ([N-003](docs/decisions/powerdns-underneath-our-own-api-in-front.md)).
 
+The project waited from 2026-08-05 to 2026-08-11 for the signal to begin, with the
+work written down and no issues open, so that the day it came was spent working
+rather than deciding.
+
 ## What happens next
 
-Six pieces of work, described in [`docs/first-work.md`](docs/first-work.md) — one
-section each, with what blocks it and what would make it done. They become issues
-on the Kolonie board under `area:dns`
-([N-019](docs/decisions/issues-live-on-the-kolonie-board.md)) **on the day the
-project begins, and not before.**
+Six pieces of work, described in [`docs/first-work.md`](docs/first-work.md) and
+now open as issues under `area:dns`
+([N-019](docs/decisions/issues-live-on-the-kolonie-board.md)).
 
 | | Needs a machine? |
 |---|---|
@@ -104,9 +104,9 @@ project begins, and not before.**
 | The product: ask for a name, set an `A` record, it resolves | yes |
 | A landing page at the apex | yes, or a static host |
 
-**The order when the signal comes:** the Public Suffix List and the schema start
-immediately and in parallel — one is a queue we cannot shorten, the other needs
-nothing. The machine arrives when it arrives, and the rest follows it.
+**The order:** the Public Suffix List and the schema start immediately and in
+parallel — one is a queue we cannot shorten, the other needs nothing. The machine
+arrives when it arrives, and the rest follows it.
 
 On the platform side, already filed and in Ready because it changes a rung
 citizens meet today:
