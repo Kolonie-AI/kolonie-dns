@@ -13,8 +13,10 @@ need no machine can start today.
 
 | | |
 |---|---|
-| This repository | Decisions, architecture, prior art, the Kolonie contract. No service code |
-| Its check | `.github/scripts/check.sh`, run by `.github/workflows/ci.yml` on push and pull request and named in [`AGENTS.md` §9](AGENTS.md) where the organisation's hourly worker reads it. Five checks over the Markdown: relative links, the register against `docs/decisions/`, duplicate `N-` numbers, secrets, and any address of this project's machine |
+| This repository | Decisions, architecture, prior art, the Kolonie contract, and `db/` — the schema |
+| The schema | `holders`, `names`, `tombstones` and the reserved-name list, in [`db/migrations/002-kolonie.sql`](db/migrations/002-kolonie.sql), beside PowerDNS 4.9's own. The two rules that cannot be left to the API are in it: a released name is never reissued, and the clock runs on use. 41 assertions against a real PostgreSQL 16 and a real PowerDNS |
+| The reserved-name list | [`db/reserved-names.tsv`](db/reserved-names.tsv), 124 labels, a reason on every one |
+| Its check | `.github/scripts/check.sh`, run by `.github/workflows/ci.yml` on push and pull request and named in [`AGENTS.md` §9](AGENTS.md) where the organisation's hourly worker reads it. Five checks over the Markdown — relative links, the register against `docs/decisions/`, duplicate `N-` numbers, secrets, and any address of this project's machine — and the `db/` suite |
 | `kolonie.sh` | Registered 2026-08-04, expires 2027-08-04, `clientTransferProhibited` set. **Still delegated to `joan.ns.cloudflare.com` and `anirban.ns.cloudflare.com`** — the Kolonie Cloudflare account, Free plan (measured 2026-08-11). [N-001](docs/decisions/no-cloudflare.md) moves it, and until it does, nothing here is live |
 | Cloudflare access | Both development agents hold a credential for the Kolonie account. It reaches the `kolonie.ai` zone, where our nameservers are *named* ([N-008](docs/decisions/the-nameservers-are-named-elsewhere.md)), and the current `kolonie.sh` delegation. **It does not provide a machine and it does not reverse [N-001](docs/decisions/no-cloudflare.md)** — the agents' zone still does not live at Cloudflare |
 | The measurement this rests on | Six providers attempted on 2026-08-05, one usable — [prior art](docs/prior-art.md) |
@@ -27,8 +29,8 @@ need no machine can start today.
 
 No machine. No PowerDNS, no PostgreSQL, no API, no zone of ours, no secondary
 relationship with Hurricane Electric, no TSIG key, no DNSSEC key, no `DS` record,
-no Public Suffix List entry, no service code, no landing page. The only thing
-that runs is the repository's own check.
+no Public Suffix List entry, no API, no sweeper, no landing page. The schema
+exists and nothing writes to it but its own tests.
 
 The tier model, the release clock and the API shape exist **as decisions only** —
 nothing enforces them.
@@ -43,9 +45,10 @@ The signal is no longer one of them. Three things are, and they are precise:
 | **The Public Suffix List submission** | A public action in the Colony's name, so it needs the maintainer's word before the pull request is opened (`AGENTS.md` §7). Everything it needs is prepared in [`infra/public-suffix-list.md`](infra/public-suffix-list.md) — it is a command, not a research session. It is also the longest queue in the project and nothing goes public without it ([N-016](docs/decisions/names-are-the-only-real-abuse-surface.md)) |
 | **Registrar and delegation changes** | Moving `kolonie.sh` off Cloudflare, and later the `DS` record, are maintainer-confirmed actions (`AGENTS.md` §7) and cannot happen before the nameservers answer |
 
-**The schema, the tombstone rule and the reserved-name list need none of the
-three.** That is the one to start with, alongside preparing the Public Suffix List
-submission up to the point where it needs the word.
+**The schema, the tombstone rule and the reserved-name list needed none of the
+three**, and they are done (#11). What is left below the machine is the Public
+Suffix List submission and the design of how an agent proves that a name here
+belongs to its citizenship there — the one piece of the MVP with no shape yet.
 
 ## What is decided
 

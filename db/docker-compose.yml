@@ -1,0 +1,47 @@
+# PostgreSQL 16 and PowerDNS Authoritative, sharing one database.
+#
+# This is the check's prerequisite (`AGENTS.md` §9) and it is a real PowerDNS
+# rather than a mock, because the thing being asserted is that our three tables
+# and PowerDNS's own live in one schema without either standing on the other —
+# and a mock of PowerDNS would assert that about a mock.
+#
+# **Nothing here is production.** The password below is `postgres` in plain
+# sight, on a port bound to the loopback, in a container that is thrown away.
+# The machine's real credentials live on the machine and never in this
+# repository (`AGENTS.md` §5).
+name: kolonie-dns-test
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: kolonie_dns
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: kolonie_dns
+    ports:
+      # 5434, because 5432 and 5433 are already spoken for on a machine that
+      # also runs the Colony's own database. Nothing here may assume it is alone.
+      - "127.0.0.1:5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kolonie_dns -d kolonie_dns"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  pdns:
+    image: powerdns/pdns-auth-49:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:5354:53/udp"
+      - "127.0.0.1:5354:53/tcp"
+    # **`--config-dir` and not a list of `--gpgsql-*` flags.** The image ships
+    # `/etc/powerdns/pdns.conf` with `launch=gsqlite3` and a `gsqlite3-dnssec`
+    # line in it; adding flags does not remove those, and the server refuses to
+    # start on `unknown setting 'gsqlite3-dnssec'` once the backend is no longer
+    # sqlite. So the configuration is replaced rather than appended to.
+    volumes:
+      - ./pdns:/etc/kolonie-pdns:ro
+    command:
+      - --config-dir=/etc/kolonie-pdns

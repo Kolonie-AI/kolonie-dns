@@ -38,8 +38,10 @@
 # catches and review does not.
 #
 # **It grows with the repository rather than being replaced by what comes next.**
-# When `db/`, `api/` and `dns/` hold code, their tests are added below and these
-# stay: a broken link does not stop mattering because there is now a suite.
+# When `api/` and `dns/` hold code, their tests are added below and these stay: a
+# broken link does not stop mattering because there is now a suite. That has
+# already happened once — check 6 is `db/`'s suite, added by `#11`, and the five
+# above it are untouched.
 
 set -uo pipefail
 
@@ -80,7 +82,7 @@ while IFS= read -r file; do
   done < <(grep -oE '\]\([^)]+\)' "$file" \
              | sed -E 's/^\]\(//; s/\)$//' \
              | grep -vE '^(https?:|mailto:|#)')
-done < <(find . -name '*.md' -not -path './.git/*')
+done < <(find . -name '*.md' -not -path './.git/*' -not -path './node_modules/*')
 [ "$broken" -eq 0 ] && echo "   ok"
 
 # --- 2: the register and the directory agree --------------------------------
@@ -145,6 +147,7 @@ done < <(grep -rInE \
   -e '(API_KEY|APIKEY|AUTH_TOKEN|SECRET|PASSWORD|PRIVATE_KEY|TSIG_KEY)[[:space:]]*[:=][[:space:]]*["'"'"'][A-Za-z0-9_/+-]{16,}' \
   -e 'secret[[:space:]]+"[A-Za-z0-9+/]{20,}={0,2}"' \
   --exclude-dir=.git \
+  --exclude-dir=node_modules \
   --exclude='check.sh' \
   . 2>/dev/null)
 [ "$found" -eq 0 ] && echo "   ok"
@@ -172,6 +175,12 @@ done < <(grep -rInE \
 # ranges, times and hashes throughout the prose, and a check nobody believes is
 # worse than none.
 #
+# **Four dotted numbers in prose read as an address, and that is the cost.**
+# `RFC 5891 §4.2.3.1` in a SQL comment failed this check on 2026-08-11, which is
+# a false positive and is also the check doing its job: it cannot tell a section
+# number from an address, and the version that could would need a list of our own
+# addresses to compare against. Write the reference without the numbering.
+#
 # **The allowed ranges are matched against the address and not against the
 # line.** `grep -o` prints one match per line rather than the line it sat on, so
 # a runbook that names `127.0.0.1` and the primary's real address in one sentence
@@ -186,11 +195,36 @@ done < <(grep -roInE \
   -e '\b([0-9]{1,3}\.){3}[0-9]{1,3}\b' \
   -e '\b[23][0-9a-fA-F]{3}:[0-9a-fA-F:]{2,}\b' \
   --exclude-dir=.git \
+  --exclude-dir=node_modules \
   --exclude='check.sh' \
   . 2>/dev/null \
   | grep -vE ':(127(\.[0-9]{1,3}){3}|0\.0\.0\.0|192\.0\.2\.[0-9]{1,3}|198\.51\.100\.[0-9]{1,3}|203\.0\.113\.[0-9]{1,3})$' \
   | grep -viE ':2001:0?db8:')
 [ "$addresses" -eq 0 ] && echo "   ok"
+
+# --- 6: the schema refuses what it is supposed to refuse --------------------
+# `kolonie-dns#11`. The five above check the documents; this checks the only
+# thing here that runs.
+#
+# **It does not skip itself when there is no database.** `kolonie-platform`'s
+# `operations/testing.md` is the argument, and it is the same one as everywhere
+# else in this file: *"a suite that skips them silently reports green while
+# covering nothing."* So an unset `DATABASE_URL` is a failure that names the
+# command that fixes it, which is also what `AGENTS.md` §9 tells the worker to
+# run first.
+heading "the schema refuses what it is supposed to refuse"
+if [ -z "${DATABASE_URL:-}" ] || [ -z "${PDNS_ADDRESS:-}" ]; then
+  fail "DATABASE_URL and PDNS_ADDRESS are unset — run: eval \"\$(npm run --silent db:up)\""
+elif [ ! -d node_modules ]; then
+  fail "no node_modules — run: npm ci"
+else
+  if npm test --silent > /tmp/kolonie-dns-check-tests.log 2>&1; then
+    echo "   ok ($(grep -oE '^# pass [0-9]+' /tmp/kolonie-dns-check-tests.log | grep -oE '[0-9]+') assertions)"
+  else
+    tail -n 40 /tmp/kolonie-dns-check-tests.log
+    fail "the suite is red — the whole of it is above"
+  fi
+fi
 
 echo
 if [ "$FAILED" -ne 0 ]; then

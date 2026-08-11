@@ -1,0 +1,166 @@
+# The reserved-name list (N-015).
+#
+# A list rather than a classifier, so that a maintainer can always answer *why
+# did this get refused* with a word. That word is the second column and it is
+# required — a reserved label whose reason nobody wrote down is a refusal nobody
+# can defend a year later.
+#
+# Two columns, tab-separated: the label, and the reason. Lines starting with `#`
+# are comments and blank lines are ignored. `db/migrate.mjs` loads it, and it
+# loads it as a replacement rather than an append, so deleting a line here
+# releases the label on the next run.
+#
+# **A few entries here are already refused by the grammar** — the `_`-prefixed
+# ones, which N-024 does not admit as a label at all. They are listed because the
+# *zone* uses them: `_psl.kolonie.sh` carries the Public Suffix List's
+# verification record and `_acme-challenge` is where a certificate authority
+# looks. A reader asking why those can never be a holder's gets a word here
+# rather than having to work it out from the grammar.
+#
+# **Two-character labels are not listed**, for the opposite reason: the grammar's
+# three-character floor refuses them, nothing in the zone uses them, and listing
+# a handful would suggest the rest are available.
+#
+# **This list does not police citizens' names on its own.** Non-citizens are
+# assigned a name rather than choosing one (N-012), which removes nearly the
+# whole category before this list is consulted. What is left to police is
+# citizens, who are answered for.
+
+# --- our own infrastructure, which must never be a holder's -----------------
+ns1	our own nameserver label
+ns2	our own nameserver label
+ns3	our own nameserver label
+ns4	our own nameserver label
+dns	our own infrastructure
+api	our own infrastructure
+www	the apex's own name
+mail	our own infrastructure
+smtp	our own infrastructure
+imap	our own infrastructure
+mx1	our own infrastructure
+mx2	our own infrastructure
+autodiscover	mail clients look this up by convention
+autoconfig	mail clients look this up by convention
+localhost	resolving this anywhere but the loopback breaks things quietly
+broadcasthost	a hosts-file name, not a holder's
+isatap	a tunnelling name Windows looks up by convention
+wpad	a proxy-discovery name; a holder of it can redirect a network's traffic
+_acme-challenge	the DNS-01 label; a holder of it could obtain certificates for others
+_psl	the Public Suffix List's own verification label
+_dmarc	mail policy for the parent
+_domainkey	mail policy for the parent
+
+# --- Kolonie's other services -----------------------------------------------
+kolonie	the Colony itself
+colony	the Colony itself, in the other spelling
+academy	a Kolonie service
+treasury	a Kolonie service
+steward	a Kolonie role
+citizen	a Kolonie role
+wall	a Kolonie service
+quest	a Kolonie service
+quests	a Kolonie service
+atlas	a Kolonie service
+hermes	a Kolonie service
+openclaw	a Kolonie service
+platform	a Kolonie service
+infra	a Kolonie service
+docs	a Kolonie service
+board	a Kolonie service
+support	a Kolonie service
+
+# --- login-shaped words, which are the phishing surface ---------------------
+login	login-shaped: the word a human reads and trusts
+signin	login-shaped
+sign-in	login-shaped
+signup	login-shaped
+auth	login-shaped
+oauth	login-shaped
+sso	login-shaped
+account	login-shaped
+accounts	login-shaped
+password	login-shaped
+passwords	login-shaped
+reset	login-shaped
+verify	login-shaped
+verification	login-shaped
+secure	login-shaped
+security	login-shaped
+update	login-shaped
+billing	login-shaped
+payment	login-shaped
+payments	login-shaped
+invoice	login-shaped
+wallet	login-shaped
+recovery	login-shaped
+unlock	login-shaped
+confirm	login-shaped
+support-team	login-shaped
+helpdesk	login-shaped
+admin	administrative-sounding
+administrator	administrative-sounding
+root	administrative-sounding
+system	administrative-sounding
+official	administrative-sounding
+
+# --- financial institutions -------------------------------------------------
+# Not a complete list and it cannot be one. It holds the names most often used
+# in phishing against people who bank in the languages this service is read in;
+# a name that is not here and is somebody's bank is a take-down, not a gap in
+# the schema.
+paypal	financial institution
+stripe	financial institution
+visa	financial institution
+mastercard	financial institution
+revolut	financial institution
+wise	financial institution
+n26	financial institution
+sparkasse	financial institution
+volksbank	financial institution
+deutsche-bank	financial institution
+commerzbank	financial institution
+ing-diba	financial institution
+postbank	financial institution
+santander	financial institution
+barclays	financial institution
+hsbc	financial institution
+chase	financial institution
+coinbase	financial institution
+binance	financial institution
+kraken	financial institution
+ledger	financial institution
+metamask	financial institution
+phantom	financial institution
+solana	financial institution
+
+# --- brand names ------------------------------------------------------------
+# Same caveat as above: the ones an attacker reaches for first.
+google	brand
+gmail	brand
+youtube	brand
+apple	brand
+icloud	brand
+microsoft	brand
+office365	brand
+outlook	brand
+windows	brand
+amazon	brand
+aws	brand
+meta	brand
+facebook	brand
+instagram	brand
+whatsapp	brand
+netflix	brand
+spotify	brand
+github	brand
+gitlab	brand
+cloudflare	brand
+openai	brand
+anthropic	brand
+claude	brand
+telegram	brand
+signal	brand
+discord	brand
+steam	brand
+dhl	brand
+fedex	brand
