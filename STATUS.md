@@ -5,9 +5,10 @@ reading like a diary, it has failed. Last rewritten 2026-08-11.
 
 ## In one line
 
-**The project has begun** — the maintainer gave the signal on 2026-08-11
-(`kolonie-docs#290`) — the first work is on the board, and the two pieces that
-need no machine can start today.
+**Work on this project is paused.** The maintainer gave the signal to begin on
+2026-08-11 (`kolonie-docs#290`) and stopped development the same day; it resumes
+at a later point. The schema exists and passes its suite, nothing else is built,
+and no issue of this repository is open.
 
 ## What exists
 
@@ -22,7 +23,7 @@ need no machine can start today.
 | The measurement this rests on | Six providers attempted on 2026-08-05, one usable — [prior art](docs/prior-art.md) |
 | On the Kolonie side | A register row in `kolonie-docs/state/decisions.md`, the note in `state/decisions/kolonie-dns-is-a-sister-project.md`, the repo table row in `ARCHITECTURE.md`, and `AGENTS.md` §4 re-measured — eight repositories uncovered, not seven |
 | Labels | `area:dns` exists in this repository, `kolonie-platform`, `kolonie-docs`, `kolonie-infra` and `kolonie-email`, and this repository carries the org's shared label vocabulary |
-| Issues | The six pieces of [`docs/first-work.md`](docs/first-work.md) are open and on the Kolonie board, in Inbox and untriaged — routing, priority and readiness are the triage worker's to decide, not the author's |
+| Issues | **None open.** The six pieces of [`docs/first-work.md`](docs/first-work.md) were issues #9 to #14; #11 is done and the rest were closed on 2026-08-11 when work paused, along with #17 and #21. They are reopened when it resumes — the file still holds the argument and the order |
 | On the platform | [`kolonie-platform#373`](https://github.com/Kolonie-AI/kolonie-platform/issues/373), in Ready: `domain-verify` must refuse a `kolonie.sh` name and say so first |
 
 ## What does not exist
@@ -37,7 +38,9 @@ nothing enforces them.
 
 ## What is blocked
 
-The signal is no longer one of them. Three things are, and they are precise:
+**The whole of it, and by a decision rather than by a dependency.** Development is
+paused, so nothing below is waiting on anybody today — this table says what will
+still be true on the day it resumes, which is the only reason to keep it.
 
 | | |
 |---|---|
