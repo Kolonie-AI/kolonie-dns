@@ -42,7 +42,7 @@ The signal is no longer one of them. Three things are, and they are precise:
 | | |
 |---|---|
 | **A machine** | `blocked:human`. It costs money and needs an account that is not Kolonie's ([N-020, N-021](docs/decisions/separate-in-every-account.md)); the maintainer said on 2026-08-05 they would provide it. Everything touching the deployment waits on it — the delegation, the product, the landing page |
-| **The Public Suffix List submission** | A public action in the Colony's name, so it needs the maintainer's word before the pull request is opened (`AGENTS.md` §7). Everything it needs is prepared in [`infra/public-suffix-list.md`](infra/public-suffix-list.md) — it is a command, not a research session. It is also the longest queue in the project and nothing goes public without it ([N-016](docs/decisions/names-are-the-only-real-abuse-surface.md)) |
+| **The Public Suffix List submission** | **The domain's registration term.** The list refuses a domain with less than two years left and requires the pull request to state that it has them; `kolonie.sh` expires 2027-08-04, which is 358 days (measured 2026-08-11). Renewing to at least 2029-08 costs money and registrar access and is the maintainer's (`AGENTS.md` §7). The maintainer's word for the public action was given on 2026-08-11 and is no longer what this waits on. Everything else is prepared in [`infra/public-suffix-list.md`](infra/public-suffix-list.md), down to the two lines it goes between |
 | **Registrar and delegation changes** | Moving `kolonie.sh` off Cloudflare, and later the `DS` record, are maintainer-confirmed actions (`AGENTS.md` §7) and cannot happen before the nameservers answer |
 
 **The schema, the tombstone rule and the reserved-name list needed none of the
