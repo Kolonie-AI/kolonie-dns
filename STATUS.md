@@ -13,7 +13,8 @@ need no machine can start today.
 
 | | |
 |---|---|
-| This repository | Decisions, architecture, prior art, the Kolonie contract. No code |
+| This repository | Decisions, architecture, prior art, the Kolonie contract. No service code |
+| Its check | `.github/scripts/check.sh`, run by `.github/workflows/ci.yml` on push and pull request and named in [`AGENTS.md` §9](AGENTS.md) where the organisation's hourly worker reads it. Five checks over the Markdown: relative links, the register against `docs/decisions/`, duplicate `N-` numbers, secrets, and any address of this project's machine |
 | `kolonie.sh` | Registered 2026-08-04, expires 2027-08-04, `clientTransferProhibited` set. **Still delegated to `joan.ns.cloudflare.com` and `anirban.ns.cloudflare.com`** — the Kolonie Cloudflare account, Free plan (measured 2026-08-11). [N-001](docs/decisions/no-cloudflare.md) moves it, and until it does, nothing here is live |
 | Cloudflare access | Both development agents hold a credential for the Kolonie account. It reaches the `kolonie.ai` zone, where our nameservers are *named* ([N-008](docs/decisions/the-nameservers-are-named-elsewhere.md)), and the current `kolonie.sh` delegation. **It does not provide a machine and it does not reverse [N-001](docs/decisions/no-cloudflare.md)** — the agents' zone still does not live at Cloudflare |
 | The measurement this rests on | Six providers attempted on 2026-08-05, one usable — [prior art](docs/prior-art.md) |
@@ -26,7 +27,8 @@ need no machine can start today.
 
 No machine. No PowerDNS, no PostgreSQL, no API, no zone of ours, no secondary
 relationship with Hurricane Electric, no TSIG key, no DNSSEC key, no `DS` record,
-no Public Suffix List entry, no code, no tests, no landing page.
+no Public Suffix List entry, no service code, no landing page. The only thing
+that runs is the repository's own check.
 
 The tier model, the release clock and the API shape exist **as decisions only** —
 nothing enforces them.

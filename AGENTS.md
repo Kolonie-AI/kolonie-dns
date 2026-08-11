@@ -141,3 +141,60 @@ day against services that have no obligation to stay the same.
 
 Fix it in the same session you found it, or open an issue. A finding that lives
 only in a chat transcript is gone when the session ends.
+
+## 9. The check command
+
+```bash
+bash .github/scripts/check.sh
+```
+
+**Run it before you commit.** It runs what `.github/workflows/ci.yml` runs, in
+the same order, and it is the whole of what CI runs rather than a faster subset —
+a check command that omits something CI does teaches you that green means
+nothing.
+
+Today it checks five things, because today this repository is Markdown: every
+relative link resolves, every file in `docs/decisions/` is cited by the register,
+no `N-` number is used twice, no secret is in the tree, and **no address of this
+project's machine is in any file** — §5's second red line, which the sibling
+repositories do not have and which is worth a pattern rather than review, because
+the machine is arriving ([#10](https://github.com/Kolonie-AI/kolonie-dns/issues/10))
+and the first person to paste an address into a runbook will not be doing it
+maliciously. The loopback and RFC 5737's documentation ranges are allowed, so an
+example has somewhere legitimate to live.
+
+**It grows as the repository does.** When `db/`, `api/` and `dns/` hold code,
+their tests are added to the script and these stay — a broken link does not stop
+mattering because there is now a suite.
+
+**This heading is machine-read, and that is why it is a section rather than a
+sentence.** The organisation's hourly coding worker learns each repository's check
+by reading the first fenced block under a heading ending *The check command*
+(`kolonie-docs#231`). A repository that names none **stops the run** before the
+model is paid for and returns the issue to Ready. This one named none until
+`kolonie-dns#15`, which made it a trap the moment work started here: the first
+issue labelled `agent:opencode` on #9–#14 would have failed for a reason that had
+nothing to do with it. **If you move or rename this section, the worker stops here
+again.**
+
+Regenerate what the worker would read, from `kolonie-docs`:
+
+```bash
+bash .github/scripts/opencode-worker.sh check-command AGENTS.md
+```
+
+### The check prerequisite
+
+**There is none, and that is the answer rather than an omission.** The sibling
+heading *The check prerequisite* (`kolonie-docs#247`) is for a repository whose
+check cannot run in an empty container — `kolonie-platform` names `npm run
+test:db:up` there, because its suite fails hard without a database. This check
+needs `bash`, `grep`, `sed`, `find` and `realpath` and nothing else, so it names
+no prerequisite and the worker reads silence. A missing check *command* stops a
+run; a missing prerequisite does not.
+
+**This will change with the schema**
+([#11](https://github.com/Kolonie-AI/kolonie-dns/issues/11)), whose tests want a
+real PostgreSQL 16 and a local PowerDNS. When they land, the command that brings
+those up goes in the block above and this paragraph goes away — the worker reads
+the section, not this note.
